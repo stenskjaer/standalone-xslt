@@ -363,22 +363,21 @@
     <xsl:apply-templates select="quote"/>
     <xsl:text>}</xsl:text>
     <xsl:text>{</xsl:text>
-     <xsl:if test="count(tokenize(normalize-space(quote), ' ')) &gt; 4">
+    <xsl:if test="count(tokenize(normalize-space(quote), ' ')) &gt; 4">
       <xsl:text>\lemma{</xsl:text>
       <xsl:value-of select="tokenize(normalize-space(quote), ' ')[1]"/>
       <xsl:text> \dots{} </xsl:text>
       <xsl:value-of select="tokenize(normalize-space(quote), ' ')[last()]"/>
       <xsl:text>}</xsl:text>
     </xsl:if>
+    <xsl:text>\Afootnote{</xsl:text>
     <xsl:apply-templates select="bibl"/>
     <xsl:apply-templates select="note"/>
-    <xsl:text>}</xsl:text>
+    <xsl:text>}}</xsl:text>
   </xsl:template>
 
-  <xsl:template match="bibl">
-    <xsl:text>\Afootnote{</xsl:text>
+  <xsl:template match="cit/bibl">
     <xsl:apply-templates/>
-    <xsl:text>}</xsl:text>
   </xsl:template>
 
   <xsl:template match="note/bibl">
@@ -390,9 +389,7 @@
   </xsl:template>
 
   <xsl:template match="cit/note">
-    <xsl:text>\Afootnote{Note: </xsl:text>
     <xsl:apply-templates/>
-    <xsl:text>}</xsl:text>
   </xsl:template>
 
   <xsl:template match="quote">
