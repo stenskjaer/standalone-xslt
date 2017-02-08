@@ -25,6 +25,7 @@
   <xsl:variable name="ignoreSpellingVariants" select="true()"/>
   <xsl:variable name="ignoreInsubstantialEntries" select="true()"/>
   <xsl:variable name="positiveApparatus" select="false()"/>
+  <xsl:variable name="apparatusNumbering" select="false()"/>
   <xsl:variable name="starts_on" select="/TEI/text/front/div/pb"/>
 
   <xsl:output method="text" indent="no"/>
@@ -906,7 +907,9 @@
       </xsl:for-each>
       <xsl:text>}</xsl:text>
     </xsl:if>
-    <!-- <xsl:text> n</xsl:text><xsl:value-of select="$appnumber"></xsl:value-of> -->
+    <xsl:if test="$apparatusNumbering">
+      <xsl:text> n</xsl:text><xsl:value-of select="$appnumber"></xsl:value-of>
+    </xsl:if>
     <xsl:if test="following-sibling::* and not(following-sibling::witDetail)">
       <xsl:value-of select="$app_entry_separator"/>
       <xsl:text> </xsl:text>
