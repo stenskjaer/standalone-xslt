@@ -864,14 +864,14 @@
 
   <!-- READING TEMPLATES -->
   <!-- Erasures in readings -->
-  <xsl:template match="rdg/space[@reason = 'erasure']">
-    <xsl:text>\emph{ras.</xsl:text>
-    <xsl:if test="@extent">
-      <xsl:text> </xsl:text>
-      <xsl:call-template name="getExtent"/>
-    </xsl:if>
-    <xsl:text>}</xsl:text>
-  </xsl:template>
+  <!-- <xsl:template match="rdg/space[@reason = 'erasure']"> -->
+  <!--   <xsl:text>\emph{ras.</xsl:text> -->
+  <!--   <xsl:if test="@extent"> -->
+  <!--     <xsl:text> </xsl:text> -->
+  <!--     <xsl:call-template name="getExtent"/> -->
+  <!--   </xsl:if> -->
+  <!--   <xsl:text>}</xsl:text> -->
+  <!-- </xsl:template> -->
 
   <!-- Unclear in readings adds an "ut vid." to the note -->
   <xsl:template match="rdg/unclear"><xsl:apply-templates/> \emph{ut vid.}</xsl:template>
