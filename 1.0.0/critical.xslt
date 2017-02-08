@@ -890,6 +890,13 @@
 
   <xsl:template name="get_witness_siglum">
     <xsl:variable name="appnumber"><xsl:number level="any" from="tei:text"/></xsl:variable>
+    <!-- Check for sibling witDetail elements and insert content -->
+    <xsl:if test="following-sibling::witDetail">
+      <xsl:text>\emph{</xsl:text>
+      <xsl:value-of select="following-sibling::witDetail"/>
+      <xsl:text>} </xsl:text>
+    </xsl:if>
+    <!-- Move on with the siglum itself -->
     <xsl:value-of select="translate(./@wit, '#', '')"/>
     <xsl:if test=".//@hand">
       <xsl:text>\hand{</xsl:text>
@@ -900,7 +907,7 @@
       <xsl:text>}</xsl:text>
     </xsl:if>
     <!-- <xsl:text> n</xsl:text><xsl:value-of select="$appnumber"></xsl:value-of> -->
-    <xsl:if test="following-sibling::*">
+    <xsl:if test="following-sibling::* and not(following-sibling::witDetail)">
       <xsl:value-of select="$app_entry_separator"/>
       <xsl:text> </xsl:text>
     </xsl:if>
