@@ -679,7 +679,6 @@
             </xsl:choose>
           </xsl:otherwise>
         </xsl:choose>
-        <xsl:text> \emph{add.} </xsl:text>
         <xsl:call-template name="getLocation" />
         <xsl:text> </xsl:text>
         <xsl:call-template name="get_witness_siglum"/>
