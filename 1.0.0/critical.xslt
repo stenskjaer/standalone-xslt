@@ -59,6 +59,9 @@
     \setmainlanguage{english}
     \setotherlanguage{latin}
 
+    % a critical mark
+    \usepackage{teubner}
+
     % git package
     \usepackage{gitinfo2}
 
@@ -97,7 +100,7 @@
     \newcommand{\name}[1]{\textsc{#1}}
     \newcommand{\worktitle}[1]{\textit{#1}}
     \newcommand{\supplied}[1]{⟨#1⟩}
-    \newcommand{\suppliedInVacuo}[1]{$\lceil$#1$\rceil$} <!-- Text added where
+    \newcommand{\suppliedInVacuo}[1]{\mqs{#1}}
     witnes(es) preserve a space -->
     \newcommand{\secluded}[1]{{[}#1{]}}
     \newcommand{\metatext}[1]{#1}
