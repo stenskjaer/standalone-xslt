@@ -841,15 +841,14 @@
             <xsl:apply-templates select="."/>
           </xsl:otherwise>
         </xsl:choose>
-        <xsl:text> \emph{conj.}</xsl:text>
         <xsl:if test="@source">
-          <xsl:text> </xsl:text>
+          <xsl:text> \emph{conj.} </xsl:text>
           <xsl:value-of select="@source"/>
           <xsl:text> </xsl:text>
-        </xsl:if>
-        <xsl:if test="following-sibling::*">
-          <xsl:value-of select="$app_entry_separator"/>
-          <xsl:text> </xsl:text>
+          <xsl:if test="following-sibling::*">
+            <xsl:value-of select="$app_entry_separator"/>
+            <xsl:text> </xsl:text>
+          </xsl:if>
         </xsl:if>
       </xsl:when>
 
