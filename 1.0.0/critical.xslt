@@ -39,7 +39,7 @@
 
   <xsl:template match="/">
     %this tex file was auto produced from TEI by lombardpress-print on <xsl:value-of select="current-dateTime()"/> using the  <xsl:value-of select="base-uri(document(''))"/>
-    \documentclass[a4paper]{book}
+    \documentclass[a4paper, 12pt]{book}
 
     % imakeidx must be loaded beore eledmac
     \usepackage{imakeidx}
