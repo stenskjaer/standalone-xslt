@@ -34,7 +34,25 @@
   <xsl:variable name="ignoreInsubstantialEntries" select="true()"/>
   <xsl:variable name="positiveApparatus" select="false()"/>
   <xsl:variable name="apparatusNumbering" select="false()"/>
+  <xsl:variable name="parallelTranslation" select="true()"/>
   <!-- END: Document configuration -->
+
+  <xsl:variable name="translationFile">
+    <xsl:variable name="absolute-path" select="base-uri(.)"/>
+    <xsl:variable name="base-filename" select="tokenize($absolute-path, '/')[last()]"/>
+    <xsl:variable name="parent" select="string-join(tokenize($absolute-path,'/')[position() &lt; last()], '/')" />
+    <xsl:variable name="translation-file" select="concat($parent, '/translation-', $base-filename)"/>
+    <xsl:choose>
+      <xsl:when test="$translation-file">
+        <xsl:value-of select="$translation-file"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:message terminate="yes">
+          The translation file $translation-file cannot be found!
+        </xsl:message>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
 
   <xsl:output method="text" indent="no"/>
   <xsl:strip-space elements="*"/>
@@ -103,6 +121,12 @@
 % other settings
 \linespread{1.1}
 
+<xsl:if test="$parallelTranslation">
+  <xsl:text>
+    % reledpar setup
+    \usepackage{reledpar}
+  </xsl:text>
+</xsl:if>
 
 % custom macros
 \newcommand{\name}[1]{#1}
@@ -143,7 +167,11 @@
 
   <xsl:template match="div[translate(@ana, '#', '') = $structure-types/*
                        and not(@n)]">
-    <xsl:text>\medbreak</xsl:text>
+    <xsl:if test="not($parallelTranslation)">
+      <!-- The parallel typesetting does not work well with manually added space
+           because of syncronization -->
+      <xsl:text>&#xa;\medbreak&#xa;</xsl:text>
+    </xsl:if>
     <xsl:apply-templates />
   </xsl:template>
 
@@ -203,9 +231,23 @@
   </xsl:template>
 
   <xsl:template match="body">
-    \begin{latin}
-    <xsl:apply-templates/>
-    \end{latin}
+    <xsl:choose>
+      <xsl:when test="$parallelTranslation">
+        \begin{pages}
+        \begin{Leftside}
+        <xsl:apply-templates/>
+        \end{Leftside}
+
+        \begin{Rightside}
+        <xsl:apply-templates select="document($translationFile)//body/div"/>
+        \end{Rightside}
+        \end{pages}
+        \Pages
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="front/div">
