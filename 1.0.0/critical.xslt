@@ -55,7 +55,8 @@
   </xsl:variable>
 
   <xsl:output method="text" indent="no"/>
-  <xsl:strip-space elements="*"/>
+  <xsl:strip-space elements="div"/>
+  <!-- <xsl:preserve-space elements="seg supplied"/> -->
   <!-- <xsl:template match="text()"> -->
   <!--     <xsl:value-of select="normalize-space(.)"/> -->
   <!-- </xsl:template> -->
