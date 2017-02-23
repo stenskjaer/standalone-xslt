@@ -176,7 +176,16 @@
     <xsl:apply-templates />
   </xsl:template>
 
+  <xsl:template name="documentDiv">
+    <xsl:param name="content"/>
+    <xsl:param name="inParallelText"/>
+    <xsl:apply-templates select="$content">
+      <xsl:with-param name="inParallelText" select="$inParallelText"/>
+    </xsl:apply-templates>
+  </xsl:template>
+
   <xsl:template match="p">
+    <xsl:param name="inParallelText"/>
     <xsl:variable name="pn"><xsl:number level="any" from="tei:text"/></xsl:variable>
     <xsl:variable name="p_count" select="count(//body/div/descendant::p)"/>
     <xsl:variable name="p_position">
@@ -194,14 +203,15 @@
       <xsl:call-template name="createPageColumnBreak">
         <xsl:with-param name="withIndicator" select="false()"/>
         <xsl:with-param name="context" select="$starts_on"/>
-      </xsl:call-template>
+        <xsl:with-param name="inParallelText" select="$inParallelText"/>
+     </xsl:call-template>
       <xsl:text>%</xsl:text>
     </xsl:if>
     <xsl:call-template name="createStructureNumber"/>
-    <xsl:apply-templates/>
     <xsl:call-template name="createLabelFromId">
       <xsl:with-param name="labelType">end</xsl:with-param>
     </xsl:call-template>
+    <xsl:apply-templates/>
     <xsl:text>&#xa;\pend&#xa;</xsl:text>
     <xsl:if test="$p_position = $p_count">
       <xsl:text>&#xa;&#xa;\endnumbering</xsl:text>
@@ -236,11 +246,17 @@
       <xsl:when test="$parallelTranslation">
         \begin{pages}
         \begin{Leftside}
-        <xsl:apply-templates/>
+        <xsl:call-template name="documentDiv">
+          <xsl:with-param name="content" select="//body/div" />
+          <xsl:with-param name="inParallelText" select="false()"/>
+        </xsl:call-template>
         \end{Leftside}
 
         \begin{Rightside}
-        <xsl:apply-templates select="document($translationFile)//body/div"/>
+        <xsl:call-template name="documentDiv">
+          <xsl:with-param name="content" select="document($translationFile)//body/div" />
+          <xsl:with-param name="inParallelText" select="true()"/>
+        </xsl:call-template>
         \end{Rightside}
         \end{pages}
         \Pages
@@ -361,38 +377,41 @@
   <xsl:template match="sic[@ana='#crux']">\corruption{<xsl:apply-templates/>}</xsl:template>
 
   <xsl:template match="pb | cb" name="createPageColumnBreak">
-    <xsl:param name="withIndicator" select="true()"/>
     <xsl:param name="context" select="."/>
-    <xsl:for-each select="$context">
-      <xsl:choose>
-        <xsl:when test="self::pb">
-          <xsl:if test="$withIndicator">
-            <xsl:text>|</xsl:text>
-          </xsl:if>
-          <xsl:text>\ledsidenote{</xsl:text>
-          <xsl:value-of select="translate(./@ed, '#', '')"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="translate(./@n, '-', '')"/>
-          <xsl:if test="following-sibling::*[1][self::cb]">
-            <xsl:value-of select="following-sibling::cb[1]/@n"/>
-          </xsl:if>
-          <xsl:text>}</xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:if test="not(preceding-sibling::*[1][self::pb])">
+    <xsl:param name="withIndicator" select="true()"/>
+    <xsl:param name="inParallelText" />
+    <xsl:if test="not($inParallelText)">
+      <xsl:for-each select="$context">
+        <xsl:choose>
+          <xsl:when test="self::pb">
             <xsl:if test="$withIndicator">
               <xsl:text>|</xsl:text>
             </xsl:if>
             <xsl:text>\ledsidenote{</xsl:text>
             <xsl:value-of select="translate(./@ed, '#', '')"/>
             <xsl:text> </xsl:text>
-            <xsl:value-of select="translate(preceding::pb[./@ed = $context/@ed][1]/@n, '-', '')"/>
-            <xsl:value-of select="./@n"/>
+            <xsl:value-of select="translate(./@n, '-', '')"/>
+            <xsl:if test="following-sibling::*[1][self::cb]">
+              <xsl:value-of select="following-sibling::cb[1]/@n"/>
+            </xsl:if>
             <xsl:text>}</xsl:text>
-          </xsl:if>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:for-each>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:if test="not(preceding-sibling::*[1][self::pb])">
+              <xsl:if test="$withIndicator">
+                <xsl:text>|</xsl:text>
+              </xsl:if>
+              <xsl:text>\ledsidenote{</xsl:text>
+              <xsl:value-of select="translate(./@ed, '#', '')"/>
+              <xsl:text> </xsl:text>
+              <xsl:value-of select="translate(preceding::pb[./@ed = $context/@ed][1]/@n, '-', '')"/>
+              <xsl:value-of select="./@n"/>
+              <xsl:text>}</xsl:text>
+            </xsl:if>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:for-each>
+    </xsl:if>
   </xsl:template>
 
 
