@@ -870,14 +870,14 @@
             <xsl:apply-templates select="supplied"/>
           </xsl:otherwise>
         </xsl:choose>
-        <xsl:text> \emph{suppl.}</xsl:text>
         <xsl:if test="@source">
+          <xsl:text> \emph{suppl.}</xsl:text>
           <xsl:text> </xsl:text>
           <xsl:value-of select="@source"/>
-        </xsl:if>
-        <xsl:if test="following-sibling::*">
-          <xsl:value-of select="$app_entry_separator"/>
-          <xsl:text> </xsl:text>
+          <xsl:if test="following-sibling::*">
+            <xsl:value-of select="$app_entry_separator"/>
+            <xsl:text> </xsl:text>
+          </xsl:if>
         </xsl:if>
       </xsl:when>
 
