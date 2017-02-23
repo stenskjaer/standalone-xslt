@@ -218,11 +218,11 @@
       <xsl:text>%</xsl:text>
     </xsl:if>
     <xsl:call-template name="createStructureNumber"/>
+    <xsl:apply-templates/>
     <xsl:text>&#xa;</xsl:text>
     <xsl:call-template name="createLabelFromId">
       <xsl:with-param name="labelType">end</xsl:with-param>
     </xsl:call-template>
-    <xsl:apply-templates/>
     <xsl:text>&#xa;\pend&#xa;</xsl:text>
     <xsl:if test="$p_position = $p_count">
       <xsl:text>&#xa;&#xa;\endnumbering</xsl:text>
