@@ -157,6 +157,14 @@
 \end{document}
   </xsl:template>
 
+  <xsl:template name="documentDiv">
+    <xsl:param name="content"/>
+    <xsl:param name="inParallelText"/>
+    <xsl:apply-templates select="$content">
+      <xsl:with-param name="inParallelText" select="$inParallelText"/>
+    </xsl:apply-templates>
+  </xsl:template>
+
   <xsl:template match="head">
     <xsl:if test="not(following-sibling::p)">
       \subsection*{<xsl:apply-templates select="."/>}
@@ -178,14 +186,6 @@
       <xsl:text>&#xa;\medbreak&#xa;</xsl:text>
     </xsl:if>
     <xsl:apply-templates />
-  </xsl:template>
-
-  <xsl:template name="documentDiv">
-    <xsl:param name="content"/>
-    <xsl:param name="inParallelText"/>
-    <xsl:apply-templates select="$content">
-      <xsl:with-param name="inParallelText" select="$inParallelText"/>
-    </xsl:apply-templates>
   </xsl:template>
 
   <xsl:template name="paragraphs" match="p">
