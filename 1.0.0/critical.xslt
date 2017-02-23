@@ -201,8 +201,18 @@
       </xsl:text>
     </xsl:if>
     <xsl:text>&#xa;\pstart</xsl:text>
-    <xsl:if test="preceding-sibling::head">
-      <xsl:text>[\subsection*{</xsl:text><xsl:apply-templates select="preceding-sibling::head/node()"/><xsl:text>}]</xsl:text>
+    <xsl:if test="preceding-sibling::head or
+                  ((parent::div[1]/translate(@ana, '#', '') = $structure-types/*) and (position() = 1))">
+      <xsl:text>[</xsl:text>
+      <xsl:if test="preceding-sibling::head">
+        <xsl:text>\subsection*{</xsl:text>
+        <xsl:apply-templates select="preceding-sibling::head/node()"/>
+        <xsl:text>}</xsl:text>
+      </xsl:if>
+      <xsl:if test="((parent::div[1]/translate(@ana, '#', '') = $structure-types/*) and (position() = 1))">
+        <xsl:text>\medbreak{}</xsl:text>
+      </xsl:if>
+      <xsl:text>]</xsl:text>
     </xsl:if>
     <xsl:text>&#xa;</xsl:text>
     <xsl:call-template name="createLabelFromId">
