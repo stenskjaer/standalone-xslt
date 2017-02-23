@@ -204,10 +204,12 @@
     <xsl:if test="preceding-sibling::head">
       <xsl:text>[\subsection*{</xsl:text><xsl:apply-templates select="preceding-sibling::head/node()"/><xsl:text>}]</xsl:text>
     </xsl:if>
+    <xsl:text>&#xa;</xsl:text>
     <xsl:call-template name="createLabelFromId">
       <xsl:with-param name="labelType">start</xsl:with-param>
     </xsl:call-template>
     <xsl:if test="$pn='1'">
+      <xsl:text>&#xa;</xsl:text>
       <xsl:call-template name="createPageColumnBreak">
         <xsl:with-param name="withIndicator" select="false()"/>
         <xsl:with-param name="context" select="$starts_on"/>
@@ -216,6 +218,7 @@
       <xsl:text>%</xsl:text>
     </xsl:if>
     <xsl:call-template name="createStructureNumber"/>
+    <xsl:text>&#xa;</xsl:text>
     <xsl:call-template name="createLabelFromId">
       <xsl:with-param name="labelType">end</xsl:with-param>
     </xsl:call-template>
