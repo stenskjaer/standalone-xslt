@@ -157,7 +157,11 @@
 \end{document}
   </xsl:template>
 
-  <xsl:template match="head">\subsection*{<xsl:apply-templates/>}</xsl:template>
+  <xsl:template match="head">
+    <xsl:if test="not(following-sibling::p)">
+      \subsection*{<xsl:apply-templates select="."/>}
+    </xsl:if>
+  </xsl:template>
 
   <xsl:param name="structure-types">
     <n>rationes-principales-pro</n>
@@ -184,7 +188,7 @@
     </xsl:apply-templates>
   </xsl:template>
 
-  <xsl:template match="p">
+  <xsl:template name="paragraphs" match="p">
     <xsl:param name="inParallelText"/>
     <xsl:variable name="pn"><xsl:number level="any" from="tei:text"/></xsl:variable>
     <xsl:variable name="p_count" select="count(//body/div/descendant::p)"/>
@@ -196,6 +200,9 @@
       </xsl:text>
     </xsl:if>
     <xsl:text>&#xa;\pstart</xsl:text>
+    <xsl:if test="preceding-sibling::head">
+      <xsl:text>[\subsection*{</xsl:text><xsl:apply-templates select="preceding-sibling::head/node()"/><xsl:text>}]</xsl:text>
+    </xsl:if>
     <xsl:call-template name="createLabelFromId">
       <xsl:with-param name="labelType">start</xsl:with-param>
     </xsl:call-template>
