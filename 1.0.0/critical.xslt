@@ -94,8 +94,9 @@
 
 
 % title settings
-\titleformat{\section} {\normalfont\scshape}{\thesection}{1em}{}
 \titleformat{\chapter} {\normalfont\large\scshape}{\thechapter}{50pt}{}
+\titleformat{\section} {\normalfont\scshape}{\thesection}{1em}{}
+\titleformat{\subsection} {\centering\normalfont\itshape}{\thesubsection}{}{}
 
 % reledmac settings
 \usepackage[final]{reledmac}
