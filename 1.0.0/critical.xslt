@@ -94,9 +94,10 @@
 
 
 % title settings
-\titleformat{\chapter} {\normalfont\large\scshape}{\thechapter}{50pt}{}
-\titleformat{\section} {\normalfont\scshape}{\thesection}{1em}{}
-\titleformat{\subsection} {\centering\normalfont\itshape}{\thesubsection}{}{}
+\titleformat{\chapter}{\normalfont\large\scshape}{\thechapter}{50pt}{}
+\titleformat{\section}{\normalfont\scshape}{\thesection}{1em}{}
+\titleformat{\subsection}[block]{\centering\normalfont\itshape}{\thesubsection}{}{}
+\titlespacing*{\subsection}{20pt}{3.25ex plus 1ex minus .2 ex}{1.5ex plus .2ex}[20pt]
 
 % reledmac settings
 \usepackage[final]{reledmac}
