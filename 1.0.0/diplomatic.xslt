@@ -1,35 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xpath-default-namespace="http://www.tei-c.org/ns/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0">
 
+  <!-- Variables from XML teiHeader -->
   <xsl:param name="apploc"><xsl:value-of select="/TEI/teiHeader/encodingDesc/variantEncoding/@location"/></xsl:param>
   <xsl:param name="notesloc"><xsl:value-of select="/TEI/teiHeader/encodingDesc/variantEncoding/@location"/></xsl:param>
   <xsl:variable name="title"><xsl:value-of select="/TEI/teiHeader/fileDesc/titleStmt/title"/></xsl:variable>
   <xsl:variable name="author"><xsl:value-of select="/TEI/teiHeader/fileDesc/titleStmt/author"/></xsl:variable>
   <xsl:variable name="editor"><xsl:value-of select="/TEI/teiHeader/fileDesc/titleStmt/editor"/></xsl:variable>
+  <xsl:variable name="witness"><xsl:value-of select="/TEI/teiHeader/fileDesc/sourceDesc/listWit/witness"/></xsl:variable>
   <xsl:param name="targetdirectory">null</xsl:param>
+
   <!-- get versioning numbers -->
   <xsl:param name="sourceversion"><xsl:value-of select="/TEI/teiHeader/fileDesc/editionStmt/edition/@n"/></xsl:param>
 
   <!-- this xsltconvnumber should be the same as the git tag, and for any commit past the tag should be the tag name plus '-dev' -->
   <xsl:param name="conversionversion">dev</xsl:param>
 
-  <!-- default is dev; if a unique version number for the print output is desired; it should be passed as a parameter -->
-
   <!-- combined version number should have mirror syntax of an equation x+y source+conversion -->
   <xsl:variable name="combinedversionnumber"><xsl:value-of select="$sourceversion"/>+<xsl:value-of select="$conversionversion"/></xsl:variable>
   <!-- end versioning numbers -->
+
+  <!-- Processing variables -->
   <xsl:variable name="fs"><xsl:value-of select="/TEI/text/body/div/@xml:id"/></xsl:variable>
-  <xsl:variable name="name-list-file">../lists/prosopography.xml</xsl:variable>
-  <xsl:variable name="work-list-file">../lists/workscited.xml</xsl:variable>
+  <xsl:variable name="name-list-file">../../lists/prosopography.xml</xsl:variable>
+  <xsl:variable name="work-list-file">../../lists/workscited.xml</xsl:variable>
+
+  <!-- BEGIN: Document configuration -->
+  <!-- Variables -->
+  <xsl:variable name="app_entry_separator">;</xsl:variable>
+  <xsl:variable name="starts_on" select="/TEI/text/front/div/pb"/>
+
+  <!-- Apparatus switches -->
+  <xsl:variable name="ignoreSpellingVariants" select="true()"/>
+  <xsl:variable name="ignoreInsubstantialEntries" select="true()"/>
+  <xsl:variable name="positiveApparatus" select="false()"/>
+  <xsl:variable name="apparatusNumbering" select="false()"/>
 
   <xsl:output method="text" indent="no"/>
-  <!-- <xsl:strip-space elements="*"/> -->
+  <xsl:strip-space elements="div"/>
+  <!-- <xsl:preserve-space elements="seg supplied"/> -->
   <!-- <xsl:template match="text()"> -->
-  <!--   <xsl:value-of select="normalize-space(.)"/> -->
+  <!--     <xsl:value-of select="normalize-space(.)"/> -->
   <!-- </xsl:template> -->
-  <!-- <xsl:template match="text()"> -->
-  <!--     <xsl:value-of select="replace(., '\s+', ' ')"/> -->
-  <!-- </xsl:template> -->
+  <xsl:template match="text()">
+      <xsl:value-of select="replace(., '\s+', ' ')"/>
+  </xsl:template>
 
   <xsl:template match="/">
     %this tex file was auto produced from TEI by lombardpress-print on <xsl:value-of select="current-dateTime()"/> using the  <xsl:value-of select="base-uri(document(''))"/>
@@ -91,6 +106,7 @@
 
     \chapter*{<xsl:value-of select="$author"/>: <xsl:value-of select="$title"/>}
     \addcontentsline{toc}{chapter}{<xsl:value-of select="$title"/>}
+    \section*{<xsl:value-of select="$witness"/>}
 
     <xsl:apply-templates select="//body"/>
     \end{document}
