@@ -36,6 +36,10 @@
   <xsl:variable name="positiveApparatus" select="false()"/>
   <xsl:variable name="apparatusNumbering" select="false()"/>
 
+  <!-- Diplomatic switches -->
+  <xsl:variable name="normalizeSpelling" select="true()"/>
+  <!-- END: Document configuration -->
+
   <xsl:output method="text" indent="no"/>
   <xsl:strip-space elements="div"/>
   <!-- <xsl:preserve-space elements="seg supplied"/> -->
@@ -171,6 +175,18 @@
     \beginnumbering
     <xsl:apply-templates/>
     \endnumbering
+  </xsl:template>
+
+  <!-- Normalization template -->
+  <xsl:template match="choice/orig">
+    <xsl:choose>
+      <xsl:when test="$normalizeSpelling">
+        <xsl:value-of select="./reg"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="./orig"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="unclear">\emph{<xsl:apply-templates/> [?]}</xsl:template>
