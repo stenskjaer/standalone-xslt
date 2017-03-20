@@ -100,6 +100,10 @@
     \newcommand{\del}[1]{[#1 del. ms]}
     \newcommand{\no}[1]{\emph{#1}\quad}
 
+    % custom headings
+    \newcommand{\customsection}[1]{{\large\itshape #1}}
+
+
     \begin{document}
     \fancyhead{}
     \fancyfoot{}
@@ -117,8 +121,12 @@
     \end{document}
   </xsl:template>
 
+  <xsl:template match="div//head">
+    <xsl:text>\pstart&#xa;\eledsection*{</xsl:text>
+    <xsl:apply-templates/>
+    <xsl:text>}&#xa;\pend&#xa;</xsl:text>
+  </xsl:template>
 
-  <xsl:template match="div//head">\section*{<xsl:apply-templates/>}</xsl:template>
   <xsl:template match="div//div">
     \bigskip
     <xsl:apply-templates/>
@@ -126,49 +134,15 @@
   </xsl:template>
   <xsl:template match="p">
     <xsl:variable name="pn"><xsl:number level="any" from="tei:text"/></xsl:variable>
-    <xsl:text>\pstart</xsl:text>
+    <xsl:text>&#xa;\pstart</xsl:text>
     <xsl:call-template name="createLabelFromId">
       <xsl:with-param name="labelType">start</xsl:with-param>
     </xsl:call-template>
-    <xsl:choose>
-      <xsl:when test="@type = 'ratio'">
-        <xsl:choose>
-          <xsl:when test="not(@n)">
-            <xsl:text>\no{1} </xsl:text>
-          </xsl:when>
-          <xsl:otherwise>\no{1.<xsl:value-of select="@n"/>} </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-      <xsl:when test="@type = 'oppositum'">
-        <xsl:choose>
-          <xsl:when test="not(@n)">
-            <xsl:text>\no{2} </xsl:text>
-          </xsl:when>
-          <xsl:otherwise>\no{2.<xsl:value-of select="@n"/>} </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-      <xsl:when test="@type = 'determinatio'">
-        <xsl:choose>
-          <xsl:when test="not(@n)">
-            <xsl:text>\no{3} </xsl:text>
-          </xsl:when>
-          <xsl:otherwise>\no{3.<xsl:value-of select="@n"/>} </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-      <xsl:when test="@type = 'ad_rationes'">
-        <xsl:choose>
-          <xsl:when test="not(@n)">
-            <xsl:text>\no{Ad 1} </xsl:text>
-          </xsl:when>
-          <xsl:otherwise>\no{Ad 1.<xsl:value-of select="@n"/>} </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-    </xsl:choose>
     <xsl:apply-templates/>
     <xsl:call-template name="createLabelFromId">
       <xsl:with-param name="labelType">end</xsl:with-param>
     </xsl:call-template>
-    <xsl:text>\pend</xsl:text>
+    <xsl:text>&#xa;\pend&#xa;</xsl:text>
   </xsl:template>
   <xsl:template match="head">
   </xsl:template>
