@@ -99,6 +99,7 @@
     \newcommand{\hand}[1]{\textsuperscript{#1}}
     \newcommand{\del}[1]{[#1 del. ms]}
     \newcommand{\no}[1]{\emph{#1}\quad}
+    \newcommand{\MSlinebreak}{}
 
     % custom headings
     \newcommand{\customsection}[1]{{\large\itshape #1}}
@@ -169,9 +170,14 @@
   <xsl:template match="q | term">\emph{<xsl:apply-templates/>}</xsl:template> <!-- Does not work in app! -->
   <xsl:template match="pb | cb"><xsl:variable name="MsI"><xsl:value-of select="translate(./@ed, '#', '')"/></xsl:variable> |\ledsidenote{<xsl:value-of select="concat($MsI, ./@n)"/>} </xsl:template>
   <xsl:template match="lb">
-    <xsl:if test="$includeLinebreaks">
-      <xsl:text>\\</xsl:text>
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="$includeLinebreaks">
+        <xsl:text>\MSlinebreak{}</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text />
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   <xsl:template match="supplied">\supplied{<xsl:apply-templates/>}</xsl:template>
   <xsl:template match="secl">\secluded{<xsl:apply-templates/>}</xsl:template>
