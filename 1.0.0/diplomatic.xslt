@@ -139,6 +139,7 @@
     <xsl:call-template name="createLabelFromId">
       <xsl:with-param name="labelType">start</xsl:with-param>
     </xsl:call-template>
+    <xsl:text>&#xa;</xsl:text>
     <xsl:apply-templates/>
     <xsl:call-template name="createLabelFromId">
       <xsl:with-param name="labelType">end</xsl:with-param>
