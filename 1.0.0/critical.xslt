@@ -721,10 +721,25 @@
 
       <!-- variation-present -->
       <xsl:when test="@type = 'variation-present'">
-        <xsl:call-template name="process_empty_lemma_reading">
-          <xsl:with-param name="reading_content" select="."/>
-          <xsl:with-param name="preceding_word" select="$preceding_word"/>
-        </xsl:call-template>
+        <xsl:choose>
+          <xsl:when test="@cause = 'repetition'">
+            <xsl:if test="not($lemma_text)">
+              <!--
+                  If there is no lemma (I think both might be intuitive to
+                  different people), use the reading, which will be identical to
+                  the preceding word, as it is an iteration
+              -->
+              <xsl:value-of select="."/>
+            </xsl:if>
+            <xsl:text> \emph{iter.} </xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:call-template name="process_empty_lemma_reading">
+              <xsl:with-param name="reading_content" select="."/>
+              <xsl:with-param name="preceding_word" select="$preceding_word"/>
+            </xsl:call-template>
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:call-template name="get_witness_siglum"/>
       </xsl:when>
 
