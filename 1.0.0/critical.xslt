@@ -117,7 +117,12 @@
 \Xnumberonlyfirstintwolines[]
 \Xbeforenotes{\baselineskip}
 
+% This should prevent overfull vboxes
+\AtBeginDocument{\Xmaxhnotes{0.5\textheight}}
+\AtBeginDocument{\maxhnotesX{0.5\textheight}}
+
 \Xprenotes{\baselineskip}
+
 \let\Afootnoterule=\relax
 \let\Bfootnoterule=\relax
 
