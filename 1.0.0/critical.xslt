@@ -34,7 +34,7 @@
   <xsl:variable name="ignoreInsubstantialEntries" select="true()"/>
   <xsl:variable name="positiveApparatus" select="false()"/>
   <xsl:variable name="apparatusNumbering" select="false()"/>
-  <xsl:variable name="parallelTranslation" select="true()"/>
+  <xsl:variable name="parallelTranslation" select="false()"/>
   <!-- END: Document configuration -->
 
   <xsl:variable name="translationFile">
