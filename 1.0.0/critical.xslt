@@ -138,6 +138,7 @@
 
 % custom macros
 \newcommand{\name}[1]{#1}
+\newcommand{\lemmaQuote}[1]{\textsc{#1}}
 \newcommand{\worktitle}[1]{\textit{#1}}
 \newcommand{\supplied}[1]{⟨#1⟩} <!-- Previously I used ⟨#1⟩ -->
 \newcommand{\suppliedInVacuo}[1]{$\ulcorner$#1$\urcorner$} <!-- Text added where witnes(es) preserve a space -->
@@ -496,6 +497,11 @@
       <xsl:when test="@type='paraphrase'">
         <xsl:apply-templates />
       </xsl:when>
+      <xsl:when test="@type='lemma'">
+        <xsl:text>\lemmaQuote{</xsl:text>
+        <xsl:apply-templates />
+        <xsl:text>}</xsl:text>
+      </xsl:when>
       <xsl:when test="@type='direct' or not(@type)">
         <xsl:text> \enquote{</xsl:text>
         <xsl:apply-templates />
@@ -557,11 +563,22 @@
       </xsl:when>
       <xsl:otherwise>
 
+
         <!-- Two initial variables -->
         <!-- Store lemma text if it exists? -->
-        <xsl:variable name="lemma_text"><xsl:value-of select="normalize-space(lem)" /></xsl:variable>
+        <xsl:variable name="lemma_text">
+          <xsl:choose>
+            <xsl:when test="lem/cit/quote">
+              <xsl:value-of select="lem/cit/quote" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="normalize-space(./lem)" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
         <!-- Register a possible text anchor (for empty lemmas) -->
         <xsl:variable name="preceding_word" select="lem/@n"/>
+
 
         <!-- The entry proper -->
         <!-- The critical text -->
@@ -571,16 +588,16 @@
 
         <!-- The app lemma. Given in abbreviated or full length. -->
         <xsl:choose>
-          <xsl:when test="count(tokenize(normalize-space(./lem), ' ')) &gt; 4">
+          <xsl:when test="count(tokenize(normalize-space($lemma_text), ' ')) &gt; 4">
             <xsl:text>\lemma{</xsl:text>
-            <xsl:value-of select="tokenize(normalize-space(./lem), ' ')[1]"/>
+            <xsl:value-of select="tokenize(normalize-space($lemma_text), ' ')[1]"/>
             <xsl:text> \dots{} </xsl:text>
-            <xsl:value-of select="tokenize(normalize-space(./lem), ' ')[last()]"/>
+            <xsl:value-of select="tokenize(normalize-space($lemma_text), ' ')[last()]"/>
             <xsl:text>}</xsl:text>
           </xsl:when>
           <xsl:otherwise>
             <xsl:text>\lemma{</xsl:text>
-            <xsl:apply-templates select="lem"/>
+            <xsl:value-of select="$lemma_text"/>
             <xsl:text>}</xsl:text>
           </xsl:otherwise>
         </xsl:choose>
