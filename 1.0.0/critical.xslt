@@ -35,6 +35,7 @@
   <xsl:variable name="positiveApparatus" select="false()"/>
   <xsl:variable name="apparatusNumbering" select="false()"/>
   <xsl:variable name="parallelTranslation" select="false()"/>
+  <xsl:variable name="appFontiumQuote" select="false()"/>
   <!-- END: Document configuration -->
 
   <xsl:variable name="translationFile">
@@ -462,15 +463,29 @@
     <xsl:apply-templates select="ref"/>
     <xsl:apply-templates select="quote"/>
     <xsl:text>}</xsl:text>
-    <xsl:text>{</xsl:text>
-    <xsl:if test="count(tokenize(normalize-space(quote), ' ')) &gt; 4">
-      <xsl:text>\lemma{</xsl:text>
-      <xsl:value-of select="tokenize(normalize-space(quote), ' ')[1]"/>
-      <xsl:text> \dots{} </xsl:text>
-      <xsl:value-of select="tokenize(normalize-space(quote), ' ')[last()]"/>
-      <xsl:text>}</xsl:text>
+    <xsl:text>{\lemma{</xsl:text>
+    <xsl:if test="$appFontiumQuote">
+      <xsl:choose>
+        <xsl:when test="count(tokenize(normalize-space(quote), ' ')) &gt; 4">
+          <xsl:value-of select="tokenize(normalize-space(quote), ' ')[1]"/>
+          <xsl:text> \dots{} </xsl:text>
+          <xsl:value-of select="tokenize(normalize-space(quote), ' ')[last()]"/>
+          <xsl:text>}</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="normalize-space(quote)"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:if>
-    <xsl:text>\Afootnote{</xsl:text>
+    <xsl:text>}</xsl:text>
+    <xsl:choose>
+      <xsl:when test="$appFontiumQuote">
+        <xsl:text>\Afootnote{</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>\Afootnote[nosep]{</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:apply-templates select="bibl"/>
     <xsl:apply-templates select="note"/>
     <xsl:text>}}</xsl:text>
