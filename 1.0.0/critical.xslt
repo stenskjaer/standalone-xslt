@@ -116,8 +116,8 @@
 \Xnumberonlyfirstinline[]
 \Xnumberonlyfirstintwolines[]
 \Xbeforenotes{\baselineskip}
-\preXnotes{24pt}
 
+\Xprenotes{\baselineskip}
 \let\Afootnoterule=\relax
 \let\Bfootnoterule=\relax
 
