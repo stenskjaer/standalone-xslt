@@ -27,6 +27,7 @@
   <!-- BEGIN: Document configuration -->
   <!-- Variables -->
   <xsl:variable name="app_entry_separator">;</xsl:variable>
+  <xsl:variable name="font_size">11</xsl:variable>
   <xsl:variable name="starts_on" select="/TEI/text/front/div/pb"/>
 
   <!-- Boolean switches -->
@@ -67,7 +68,7 @@
 
   <xsl:template match="/">
 %this tex file was auto produced from TEI by lombardpress-print on <xsl:value-of select="current-dateTime()"/> using the  <xsl:value-of select="base-uri(document(''))"/>
-\documentclass[a4paper, 12pt]{book}
+\documentclass[a4paper, <xsl:value-of select="$font_size"/>pt]{book}
 
 % imakeidx must be loaded beore eledmac
 \usepackage{imakeidx}
