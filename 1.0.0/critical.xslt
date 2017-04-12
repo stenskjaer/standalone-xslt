@@ -187,7 +187,7 @@
 
   <xsl:template match="head">
     <xsl:if test="not(following-sibling::p)">
-      \subsection*{<xsl:apply-templates select="."/>}
+      \subsection*{<xsl:apply-templates/>}
     </xsl:if>
   </xsl:template>
 
