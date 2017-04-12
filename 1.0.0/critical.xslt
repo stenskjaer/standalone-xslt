@@ -1128,7 +1128,7 @@
     <xsl:if test="$apparatusNumbering">
       <xsl:text> n</xsl:text><xsl:value-of select="$appnumber"></xsl:value-of>
     </xsl:if>
-    <xsl:if test="following-sibling::* and not(following-sibling::witDetail)">
+    <xsl:if test="following-sibling::*[1][self::rdg]">
       <xsl:value-of select="$app_entry_separator"/>
       <xsl:text> </xsl:text>
     </xsl:if>
