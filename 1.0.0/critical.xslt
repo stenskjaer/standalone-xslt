@@ -114,7 +114,8 @@
 % reledmac settings
 \usepackage[final]{reledmac}
 
-\Xinplaceoflemmaseparator{0pt} % Don't add space after nolemma notes
+\Xinplaceoflemmaseparator{0pt} % Don't add space after nolemma notes.
+\Xlemmadisablefontselection[A] % In fontium lemmata, don't copy font formatting.
 \Xarrangement{paragraph}
 \linenummargin{outer}
 \sidenotemargin{inner}
