@@ -224,7 +224,7 @@
       </xsl:text>
     </xsl:if>
     <xsl:text>&#xa;\pstart</xsl:text>
-    <xsl:if test="preceding-sibling::head or
+    <xsl:if test="preceding-sibling::*[1][self::head] or
                   ((parent::div[1]/translate(@ana, '#', '') = $structure-types/*) and (position() = 1))">
       <xsl:text>[</xsl:text>
       <xsl:if test="preceding-sibling::head">
