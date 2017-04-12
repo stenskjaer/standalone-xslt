@@ -58,6 +58,14 @@
     </xsl:choose>
   </xsl:variable>
 
+  <xsl:variable name="text_language">
+    <xsl:choose>
+      <xsl:when test="//text[@xml:lang='la']">latin</xsl:when>
+      <xsl:otherwise>english</xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
+
   <xsl:output method="text" indent="no"/>
   <xsl:strip-space elements="div"/>
   <!-- <xsl:preserve-space elements="seg supplied"/> -->
@@ -208,7 +216,10 @@
       <xsl:number from="/TEI/text/body/div" level="any"/>
     </xsl:variable>
     <xsl:if test="$pn='1'">
-      <xsl:text>&#xa;&#xa;\beginnumbering
+      <xsl:text>&#xa;&#xa;\begin{</xsl:text>
+      <xsl:value-of select="$text_language"/>
+      <xsl:text>}</xsl:text>
+      <xsl:text>&#xa;\beginnumbering
       </xsl:text>
     </xsl:if>
     <xsl:text>&#xa;\pstart</xsl:text>
@@ -247,6 +258,9 @@
     <xsl:text>&#xa;\pend&#xa;</xsl:text>
     <xsl:if test="$p_position = $p_count">
       <xsl:text>&#xa;&#xa;\endnumbering</xsl:text>
+      <xsl:text>&#xa;\end{</xsl:text>
+      <xsl:value-of select="$text_language"/>
+      <xsl:text>}</xsl:text>
     </xsl:if>
   </xsl:template>
 
