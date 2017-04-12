@@ -602,7 +602,7 @@
               <xsl:value-of select="lem/cit/quote" />
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="normalize-space(./lem)" />
+              <xsl:value-of select="lem/text()" />
             </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
@@ -668,7 +668,7 @@
                gives problems with additions, where the test on identity between
                lemma and reading returns true, but I don't what that (the
                reading contains an <add>. -->
-          <xsl:if test="not($lemma_text = normalize-space(.) or @ana = '#lemma')
+          <xsl:if test="not($lemma_text = ./text() or @ana = '#lemma')
                         or @type = 'correction-addition'
                         or $positiveApparatus">
             <xsl:call-template name="varianttype">
@@ -763,7 +763,7 @@
       <!-- VARIATION READINGS -->
       <!-- variation-substance -->
       <xsl:when test="@type = 'variation-substance' or not(@type)">
-        <xsl:if test="not($lemma_text = normalize-space(.))">
+        <xsl:if test="not($lemma_text = rdg/text())">
           <xsl:apply-templates select="."/>
         </xsl:if>
         <xsl:text> </xsl:text>
