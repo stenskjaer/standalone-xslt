@@ -21,16 +21,13 @@
   <xsl:variable name="combinedversionnumber"><xsl:value-of select="$sourceversion"/>+<xsl:value-of select="$conversionversion"/></xsl:variable>
   <!-- end versioning numbers -->
 
-  <!-- Processing variables -->
-  <xsl:variable name="fs"><xsl:value-of select="/TEI/text/body/div/@xml:id"/></xsl:variable>
-  <xsl:variable name="name-list-file">../../lists/prosopography.xml</xsl:variable>
-  <xsl:variable name="work-list-file">../../lists/workscited.xml</xsl:variable>
-
   <!-- BEGIN: Document configuration -->
   <!-- Variables -->
   <xsl:variable name="starts_on" select="/TEI/text/front/div/pb"/>
 
   <!-- Command line parameters -->
+  <xsl:param name="name-list-file">../../lists/prosopography.xml</xsl:param>
+  <xsl:param name="work-list-file">../../lists/workscited.xml</xsl:param>
   <xsl:param name="app-entry-separator">;</xsl:param>
   <xsl:param name="font-size">12</xsl:param>
   <xsl:param name="ignore-spelling-variants">no</xsl:param>
