@@ -31,16 +31,16 @@
   <xsl:variable name="starts_on" select="/TEI/text/front/div/pb"/>
 
   <!-- Command line parameters -->
-  <xsl:param name="app_entry_separator">;</xsl:param>
-  <xsl:param name="font_size">12</xsl:param>
-  <xsl:param name="ignoreSpellingVariants">no</xsl:param>
-  <xsl:param name="ignoreInsubstantialEntries">no</xsl:param>
-  <xsl:param name="positiveApparatus">no</xsl:param>
-  <xsl:param name="apparatusNumbering">no</xsl:param>
-  <xsl:param name="parallelTranslation">no</xsl:param>
-  <xsl:param name="appFontiumQuote">no</xsl:param>
-  <xsl:param name="includeAppNotes">yes</xsl:param>
-  <xsl:param name="appNotesInSeparateApparatus">yes</xsl:param>
+  <xsl:param name="app-entry-separator">;</xsl:param>
+  <xsl:param name="font-size">12</xsl:param>
+  <xsl:param name="ignore-spelling-variants">no</xsl:param>
+  <xsl:param name="ignore-insubstantial-entries">no</xsl:param>
+  <xsl:param name="positive-apparatus">no</xsl:param>
+  <xsl:param name="apparatus-numbering">no</xsl:param>
+  <xsl:param name="parallel-translation">no</xsl:param>
+  <xsl:param name="app-fontium-quote">no</xsl:param>
+  <xsl:param name="include-app-notes">yes</xsl:param>
+  <xsl:param name="app-notes-in-separate-apparatus">yes</xsl:param>
   <xsl:param name="standalone-document">no</xsl:param>
 
   <!--
@@ -115,7 +115,7 @@
   <xsl:template match="/">
     <xsl:if test="private:istrue($standalone-document)">
       %this tex file was auto produced from TEI by lombardpress-print on <xsl:value-of select="current-dateTime()"/> using the  <xsl:value-of select="base-uri(document(''))"/>
-      \documentclass[a4paper, <xsl:value-of select="$font_size"/>pt]{book}
+      \documentclass[a4paper, <xsl:value-of select="$font-size"/>pt]{book}
 
       % imakeidx must be loaded beore eledmac
       \usepackage{imakeidx}
@@ -179,7 +179,7 @@
       % other settings
       \linespread{1.1}
 
-      <xsl:if test="private:istrue($parallelTranslation)">
+      <xsl:if test="private:istrue($parallel-translation)">
         <xsl:text>
           % reledpar setup
           \usepackage{reledpar}
@@ -242,7 +242,7 @@
 
   <xsl:template match="div[translate(@ana, '#', '') = $structure-types/*
                        and not(@n)]">
-    <xsl:if test="private:isfalse($parallelTranslation)">
+    <xsl:if test="private:isfalse($parallel-translation)">
       <!-- The parallel typesetting does not work well with manually added space
            because of syncronization -->
       <xsl:text>&#xa;\medbreak&#xa;</xsl:text>
@@ -331,7 +331,7 @@
 
   <xsl:template match="body">
     <xsl:choose>
-      <xsl:when test="private:istrue($parallelTranslation)">
+      <xsl:when test="private:istrue($parallel-translation)">
         \begin{pages}
         \begin{Leftside}
         <xsl:call-template name="documentDiv">
@@ -520,7 +520,7 @@
     <xsl:apply-templates select="ref|quote"/>
     <xsl:text>}</xsl:text>
     <xsl:text>{\lemma{</xsl:text>
-    <xsl:if test="private:istrue($appFontiumQuote)">
+    <xsl:if test="private:istrue($app-fontium-quote)">
       <xsl:choose>
         <xsl:when test="count(tokenize(normalize-space(quote), ' ')) &gt; 4">
           <xsl:value-of select="tokenize(normalize-space(quote), ' ')[1]"/>
@@ -535,7 +535,7 @@
     </xsl:if>
     <xsl:text>}</xsl:text>
     <xsl:choose>
-      <xsl:when test="private:istrue($appFontiumQuote)">
+      <xsl:when test="private:istrue($app-fontium-quote)">
         <xsl:text>\Afootnote{</xsl:text>
       </xsl:when>
       <xsl:otherwise>
@@ -623,12 +623,12 @@
     <!-- First, check if it's a spelling entry and if they should be added -->
     <xsl:choose>
       <xsl:when test="@type='variation-spelling'">
-        <xsl:if test="private:istrue($ignoreSpellingVariants)">
+        <xsl:if test="private:istrue($ignore-spelling-variants)">
           <xsl:apply-templates select="lem"/>
         </xsl:if>
       </xsl:when>
       <xsl:when test="@type='insubstantial'">
-        <xsl:if test="private:istrue($ignoreInsubstantialEntries)">
+        <xsl:if test="private:istrue($ignore-insubstantial-entries)">
           <xsl:apply-templates select="lem"/>
         </xsl:if>
       </xsl:when>
@@ -711,7 +711,7 @@
                reading contains an <add>. -->
           <xsl:if test="not($lemma_text = ./text() or @copyOf = 'preceding::lem')
                         or @type = 'correction-addition'
-                        or private:istrue($positiveApparatus)">
+                        or private:istrue($positive-apparatus)">
             <xsl:call-template name="varianttype">
               <xsl:with-param name="preceding_word" select="$preceding_word"/>
               <xsl:with-param name="lemma_text" select="$lemma_text" />
@@ -723,17 +723,17 @@
         <!-- Handling of apparatus notes. -->
         <!-- Test: If notes as included, and there is a note in the apparatus:
              either make a separate app entry (Cfootnote), if
-             $appNotesInSeparateApparatus is true, otherwise, just include it in
+             $app-notes-in-separate-apparatus is true, otherwise, just include it in
              the current app (Bfootnote).
              If there is no note, or they have been excluded, just close the app.
         -->
         <xsl:choose>
           <!-- First: is there any notes, and they are not excluded -->
-          <xsl:when test="./note and private:istrue($includeAppNotes)">
+          <xsl:when test="./note and private:istrue($include-app-notes)">
 
             <xsl:choose>
               <!-- Create separate note apparatus with Cfootnote -->
-              <xsl:when test="private:istrue($appNotesInSeparateApparatus)">
+              <xsl:when test="private:istrue($app-notes-in-separate-apparatus)">
                 <!-- Close current entry and create new. -->
                 <xsl:text>}}</xsl:text>
 
@@ -813,7 +813,7 @@
 
       <!-- variation-orthography -->
       <xsl:when test="@type = 'variation-orthography'">
-        <xsl:if test="private:isfalse($ignoreSpellingVariants)">
+        <xsl:if test="private:isfalse($ignore-spelling-variants)">
           <xsl:apply-templates select="."/>
           <xsl:text> </xsl:text>
           <xsl:call-template name="get_witness_siglum"/>
@@ -1059,7 +1059,7 @@
           <xsl:text> </xsl:text>
           <xsl:value-of select="@source"/>
           <xsl:if test="following-sibling::*">
-            <xsl:value-of select="$app_entry_separator"/>
+            <xsl:value-of select="$app-entry-separator"/>
             <xsl:text> </xsl:text>
           </xsl:if>
         </xsl:if>
@@ -1087,7 +1087,7 @@
           <xsl:value-of select="@source"/>
         </xsl:if>
         <xsl:if test="following-sibling::*">
-          <xsl:value-of select="$app_entry_separator"/>
+          <xsl:value-of select="$app-entry-separator"/>
           <xsl:text> </xsl:text>
         </xsl:if>
       </xsl:when>
@@ -1106,7 +1106,7 @@
           <xsl:value-of select="@source"/>
           <xsl:text> </xsl:text>
           <xsl:if test="following-sibling::*">
-            <xsl:value-of select="$app_entry_separator"/>
+            <xsl:value-of select="$app-entry-separator"/>
             <xsl:text> </xsl:text>
           </xsl:if>
         </xsl:if>
@@ -1166,11 +1166,11 @@
       </xsl:for-each>
       <xsl:text>}</xsl:text>
     </xsl:if>
-    <xsl:if test="private:istrue($apparatusNumbering)">
+    <xsl:if test="private:istrue($apparatus-numbering)">
       <xsl:text> n</xsl:text><xsl:value-of select="$appnumber"></xsl:value-of>
     </xsl:if>
     <xsl:if test="following-sibling::*[1][self::rdg]">
-      <xsl:value-of select="$app_entry_separator"/>
+      <xsl:value-of select="$app-entry-separator"/>
       <xsl:text> </xsl:text>
     </xsl:if>
   </xsl:template>
